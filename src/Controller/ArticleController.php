@@ -42,10 +42,10 @@ class ArticleController extends AbstractController
             if ($image) {
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$$image->guessExtension();
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
                 try {
                     $image->move(
-                        $this->getParameter('image'),
+                        $this->getParameter('images_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
