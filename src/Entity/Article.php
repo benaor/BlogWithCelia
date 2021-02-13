@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Article
 {
@@ -81,13 +82,6 @@ class Article
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
     public function getAuthor(): ?string
     {
         return $this->author;
@@ -122,5 +116,15 @@ class Article
         $this->resume = $resume;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @return void
+     */
+    public function prePersist(){
+        if(empty($this->date)){
+            $this->date = new \DateTime(); 
+        }
     }
 }
